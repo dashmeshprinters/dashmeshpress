@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found</title>
+  <script>
+    // Redirect to the main app and let React Router handle the routing
+    sessionStorage.redirect = location.href.split('/').slice(3).join('/');
+    location.replace('/');
+  </script>
+</head>
+<body>
+  <p>If you are not redirected, please <a href="/">click here</a>.</p>
+</body>
+</html>

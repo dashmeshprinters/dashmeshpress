@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Phone, Mail, MapPin, Clock, Send, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -15,22 +16,47 @@ const Contact = () => {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const form = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    toast({
-      title: 'Message Sent!',
-      description: 'Thank you for contacting us. We\'ll get back to you soon.',
-    });
     
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      subject: '',
-      message: '',
-    });
+    if (!form.current) return;
+    
+    try {
+      // Initialize EmailJS with your public key
+      emailjs.init('DyxkiQMp0cVqoZTjl');
+      
+      // Send email using EmailJS
+      const result = await emailjs.sendForm(
+        'service_5rureww', // Replace with your EmailJS Service ID
+        'template_iod0kca', // Replace with your EmailJS Template ID
+        form.current
+      );
+      
+      // Show success message
+      toast({
+        title: 'Message Sent!',
+        description: 'Thank you for contacting us. We\'ll get back to you soon.',
+      });
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+      });
+      
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to send message. Please try again later.',
+        variant: 'destructive',
+      });
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -155,7 +181,7 @@ const Contact = () => {
                 Send us a <span className="text-gradient">Message</span>
               </h2>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form ref={form} onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">

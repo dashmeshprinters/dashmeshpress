@@ -16,23 +16,7 @@ const BusinessCards = () => {
     'Digital Proof Before Print'
   ];
 
-  const packages = [
-    {
-      name: 'Standard',
-      price: '₹3 per card',
-      features: ['300 GSM Paper', 'Single Side Print', 'Standard Design', 'Matte Finish']
-    },
-    {
-      name: 'Professional',
-      price: '₹8 per card',
-      features: ['350 GSM Paper', 'Double Side Print', 'Custom Design', 'Glossy/Matte Finish', 'Logo Integration']
-    },
-    {
-      name: 'Premium',
-      price: '₹15 per card',
-      features: ['400 GSM Paper', 'Spot UV Coating', 'Embossed Design', 'Multiple Finishes', 'Premium Design Service']
-    }
-  ];
+
 
   return (
     <div>
@@ -104,49 +88,7 @@ const BusinessCards = () => {
         </div>
       </section>
 
-      {/* Packages Section */}
-      <section className="section-padding bg-white">
-        <div className="container-max">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
-              Choose Your <span className="text-gradient">Package</span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Select the perfect business card package for your professional needs.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {packages.map((pkg, index) => (
-              <div
-                key={pkg.name}
-                className={`card-elegant text-center ${index === 1 ? 'ring-2 ring-primary scale-105' : ''}`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <h3 className="text-2xl font-bold text-foreground mb-4">
-                  {pkg.name}
-                </h3>
-                <div className="text-3xl font-bold text-primary mb-6">
-                  {pkg.price}
-                </div>
-                <ul className="space-y-3 mb-8">
-                  {pkg.features.map((feature) => (
-                    <li key={feature} className="flex items-center text-muted-foreground">
-                      <CheckCircle className="h-5 w-5 text-accent mr-3 flex-shrink-0" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <Link to="/quote">
-                  <Button className="w-full bg-gradient-to-r from-primary to-primary-light text-primary-foreground hover:shadow-lg">
-                    Select Package
-                  </Button>
-                </Link>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="section-padding bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white">

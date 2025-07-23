@@ -26,9 +26,9 @@ const Footer = () => {
                 <a href="#" className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
                   <Instagram className="h-5 w-5" />
                 </a>
-                <a href="#" className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
+                {/* <a href="#" className="w-10 h-10 bg-primary rounded-full flex items-center justify-center hover:bg-primary-light transition-colors">
                   <Twitter className="h-5 w-5" />
-                </a>
+                </a> */}
               </div>
             </div>
 
@@ -59,7 +59,7 @@ const Footer = () => {
                 </div>
                 <div className="flex items-center space-x-3">
                   <Phone className="h-5 w-5 text-accent" />
-                  <span className="text-gray-300">+91 9917387299</span>
+                  <span className="text-gray-300">+91 9917387299, 8958335609</span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <Mail className="h-5 w-5 text-accent" />
@@ -83,10 +83,10 @@ const Footer = () => {
               © 2024 Dashmesh Printers and Card Gallery. All rights reserved.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <Link to="/privacy" className="text-gray-400 hover:text-white text-sm transition-colors">
+              <Link to="/privacy-policy" className="text-gray-400 hover:text-white text-sm transition-colors">
                 Privacy Policy
               </Link>
-              <Link to="/terms" className="text-gray-400 hover:text-white text-sm transition-colors">
+              <Link to="/terms-of-service" className="text-gray-400 hover:text-white text-sm transition-colors">
                 Terms of Service
               </Link>
             </div>

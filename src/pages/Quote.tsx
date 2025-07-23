@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Calculator, Send, CheckCircle, Clock, Award, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import emailjs from '@emailjs/browser';
 
 const Quote = () => {
   const { toast } = useToast();
@@ -21,27 +22,71 @@ const Quote = () => {
     urgency: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const form = useRef<HTMLFormElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    toast({
-      title: 'Quote Request Submitted!',
-      description: 'We\'ll review your requirements and get back to you within 24 hours.',
-    });
+    if (!form.current) return;
     
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      company: '',
-      service: '',
-      quantity: '',
-      timeline: '',
-      budget: '',
-      description: '',
-      urgency: '',
-    });
+    setIsSubmitting(true);
+    
+    try {
+      // Initialize EmailJS with your public key
+      emailjs.init('DyxkiQMp0cVqoZTjl');
+      
+      // Manually construct the email parameters
+      const templateParams = {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.company || 'Not provided',
+        service: formData.service || 'Not specified',
+        quantity: formData.quantity || 'Not specified',
+        timeline: formData.timeline || 'Not specified',
+        budget: formData.budget || 'Not specified',
+        description: formData.description || 'No description provided',
+        from_name: 'Website Contact Form',
+        to_email: 'dashmeshprinters99@gmail.com'
+      };
+      
+      // Send email using EmailJS with explicit parameter
+      await emailjs.send(
+        'service_5rureww',
+        'template_h2riu18',
+        templateParams
+      );
+      
+      // Show success message
+      toast({
+        title: 'Quote Request Submitted!',
+        description: 'We\'ll review your requirements and get back to you within 24 hours.',
+      });
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        company: '',
+        service: '',
+        quantity: '',
+        timeline: '',
+        budget: '',
+        description: '',
+        urgency: '',
+      });
+      
+    } catch (error) {
+      console.error('Failed to submit quote request:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to submit quote request. Please try again later or contact us directly.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -52,10 +97,10 @@ const Quote = () => {
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setFormData({
-      ...formData,
+    setFormData(prev => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
   const services = [
@@ -166,7 +211,7 @@ const Quote = () => {
                 </p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form ref={form} onSubmit={handleSubmit} className="space-y-6">
                 {/* Personal Information */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
@@ -239,7 +284,10 @@ const Quote = () => {
                     <label htmlFor="service" className="block text-sm font-medium text-foreground mb-2">
                       Service Required *
                     </label>
-                    <Select onValueChange={(value) => handleSelectChange('service', value)}>
+                    <Select 
+                      onValueChange={(value) => handleSelectChange('service', value)}
+                      value={formData.service}
+                    >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select a service" />
                       </SelectTrigger>
@@ -274,7 +322,10 @@ const Quote = () => {
                     <label htmlFor="timeline" className="block text-sm font-medium text-foreground mb-2">
                       Required Timeline
                     </label>
-                    <Select onValueChange={(value) => handleSelectChange('timeline', value)}>
+                    <Select 
+                      onValueChange={(value) => handleSelectChange('timeline', value)}
+                      value={formData.timeline}
+                    >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="When do you need this?" />
                       </SelectTrigger>
@@ -291,7 +342,10 @@ const Quote = () => {
                     <label htmlFor="budget" className="block text-sm font-medium text-foreground mb-2">
                       Budget Range (Optional)
                     </label>
-                    <Select onValueChange={(value) => handleSelectChange('budget', value)}>
+                    <Select 
+                      onValueChange={(value) => handleSelectChange('budget', value)}
+                      value={formData.budget}
+                    >
                       <SelectTrigger className="w-full">
                         <SelectValue placeholder="Select budget range" />
                       </SelectTrigger>
@@ -333,9 +387,25 @@ const Quote = () => {
                   </ul>
                 </div>
 
-                <Button type="submit" className="btn-hero w-full">
-                  <Send className="h-5 w-5 mr-2" />
-                  Request Free Quote
+                <Button 
+                  type="submit" 
+                  className="btn-hero w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-5 w-5 mr-2" />
+                      Request Free Quote
+                    </>
+                  )}
                 </Button>
               </form>
             </div>

@@ -4,10 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashmesh Printers - Premium Printing & Creative Design Solutions</title>
-    <meta name="description" content="Professional printing services in Chandigarh. Wedding cards, business materials, flex printing, digital printing, and custom designs. Quality printing since 2009." />
-    <meta name="keywords" content="printing services, wedding cards, business cards, flex printing, digital printing, offset printing, Chandigarh, Punjab" />
+    <meta name="description" content="Dashmesh Printers - Your one-stop solution for all printing needs in Chandigarh. Specializing in wedding cards, business cards, flex printing, digital printing, and custom designs. Quality printing services since 2009 with a commitment to excellence and customer satisfaction." />
+    <meta name="keywords" content="printing services Chandigarh, wedding cards, business cards, visiting cards, flex printing, digital printing, offset printing, brochure printing, banner printing, Punjab, custom printing, Dashmesh Printers" />
     <meta name="author" content="Dashmesh Printers" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" sizes="64x64" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <meta name="theme-color" content="#ffffff" />
+    <base href="/" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
@@ -46,8 +49,17 @@
     }
     </script>
   </head>
-
   <body>
+    <script>
+      // Handle GitHub Pages redirect
+      (function() {
+        var redirect = sessionStorage.redirect;
+        delete sessionStorage.redirect;
+        if (redirect && redirect != location.href) {
+          history.replaceState(null, null, redirect);
+        }
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
